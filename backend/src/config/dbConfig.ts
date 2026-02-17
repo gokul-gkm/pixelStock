@@ -1,0 +1,25 @@
+import { connect } from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const dbConnect = async () => {
+  const mongoUrl = process.env.MONGO_URL;
+
+  try {
+    if (!mongoUrl) {
+      throw new Error("❌ MongoDB connection failed: MONGO_URL is not defined.");
+    }
+    await connect(mongoUrl)
+      .then(() => {
+        console.log("✅ MongoDB connection established successfully.");
+      })
+      .catch((err) => {
+        console.error("Error while connecting to MongoDB:", err);
+      });
+  } catch (error) {
+    console.log("error when connecting DB...!",error);
+  }
+};
+
+export default dbConnect;
