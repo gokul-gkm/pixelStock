@@ -1,11 +1,13 @@
+import "reflect-metadata";
+import "@/di/container";
 import express from "express";
 import { createServer } from "http";
 import dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import dbConnect from "./config/dbConfig";
 import authRoute from "./routers/auth.routers";
-import cookieParser from "cookie-parser";
 
 dotenv.config();
 
