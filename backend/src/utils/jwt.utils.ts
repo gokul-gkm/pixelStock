@@ -19,6 +19,15 @@ export const emailVerificationToken = (email: string) => {
     return jwt.sign({email}, VERIFY_EMAIL_SECRET, {"expiresIn": "1d"})
 }
 
+export const verifyAccessToken = (token: string) => {
+  try {
+    return jwt.verify(token, ACCESS_TOKEN_SECRET);
+  } catch (error) {
+    return null;
+  }
+};
+
+
 export const verifyEmailToken = (token: string): string => {
   try {
     const decoded = jwt.verify(token, process.env.VERIFY_EMAIL_SECRET!) as {

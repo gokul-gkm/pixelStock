@@ -8,6 +8,7 @@ import { PublicRoute } from "../hoc/PublicRoute";
 import { ProtectedRoute } from "../hoc/ProtectedRoute";
 import ForgotPasswordPage from "../pages/user/auth/ForgotPassword";
 import ResetPasswordPage from "../pages/user/auth/ResetPassword";
+import { Profile } from "../pages/user/profile/Profile";
 
 export const UserRoutes: RouteObject[] = [
   {
@@ -43,7 +44,8 @@ export const UserRoutes: RouteObject[] = [
   {
     element: <ProtectedRoute />,
     children: [
-        { path: "dashboard", element: <DashboardPage /> }
+        { path: "dashboard", element: <DashboardPage /> },
+        { path: "profile", element: <Profile /> }
     ],
   },
   { path: "*", element: <Home /> },

@@ -5,7 +5,6 @@ import { IAuthService } from "@/services/interfaces/auth.Iservice";
 import { StatusCodes } from "http-status-codes";
 import { TOKENS } from "@/di/tokens";
 import { setCookie } from "@/utils/cookie.utils";
-import { email } from "zod";
 import { ForgotPasswordDTO, ResetPaswordDTO } from "@/dtos/auth.dto";
 
 @Service()

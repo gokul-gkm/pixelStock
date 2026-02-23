@@ -1,11 +1,7 @@
 import type { SigninSchemaType, SignupSchemaType } from "../../lib/validations/auth.z.validation";
+import { extractErrorMessage } from "../../utils/apiError.utils";
 import { publicAxiosInstance } from "../axios";
 
-function extractErrorMessage(error: any): string {
-  if (error?.response?.data?.message) return error.response.data.message;
-  if (error?.message) return error.message;
-  return "Something went wrong. Please try again.";
-}
 
 export const authService = {
   signup: async (data: SignupSchemaType) => {

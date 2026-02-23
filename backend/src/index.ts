@@ -10,6 +10,7 @@ import dbConnect from "./config/dbConfig";
 import authRoute from "./routers/auth.routers";
 import { globalErrorHandler } from "./middlewares/error.middleware";
 import morgan from 'morgan';
+import userRoute from "./routers/user.routers";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use(cookieParser());
 app.use(morgan(morganFormat));
 
 app.use('/auth', authRoute);
+app.use('/users', userRoute);
 
 app.use(globalErrorHandler);
 
