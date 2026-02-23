@@ -1,23 +1,29 @@
 import { Inject, Service } from "typedi";
 import { IAuthService } from "../interfaces/auth.Iservice";
-import { SignUpDTO } from "@/dtos/auth.dto";
-import { SignUpResponse } from "@/interfaces/auth.interface";
+import { ForgotPasswordDTO, ResetPaswordDTO, SignInDTO, SignUpDTO } from "@/dtos/auth.dto";
+import { AuthResponse, SignInResponse, SignUpResponse } from "@/interfaces/auth.interface";
 import { AppError } from "@/utils/customError.utils";
 import { StatusCodes } from "http-status-codes";
 import { responseMessage } from "@/enums/responseMessage";
 import { IUserRepository } from "@/repositories/interfaces/user.Irepository";
 import { passwordHash } from "@/utils/password.utils";
 import { IUser } from "@/models/user.model";
-import { emailVerificationToken } from "@/utils/jwt.utils";
-import { sendVerificationEmail } from "@/utils/email.utils";
+import {
+  emailVerificationToken,
+  generateAccessToken,
+  generateRefreashToken,
+  verifyEmailToken,
+} from "@/utils/jwt.utils";
+import { sendPasswordResetEmail, sendVerificationEmail } from "@/utils/email.utils";
 import { TOKENS } from "@/di/tokens";
+import bcrypt from "bcryptjs";
 
 @Service({ id: TOKENS.AuthService })
 export class AuthService implements IAuthService {
-    constructor(
-        @Inject(TOKENS.UserRepository)
-        private _userRepository: IUserRepository
-    ) { }
+  constructor(
+    @Inject(TOKENS.UserRepository)
+    private _userRepository: IUserRepository,
+  ) {}
   async signUp(data: SignUpDTO): Promise<SignUpResponse> {
     try {
       const { firstName, lastName, email, phone, password, confirmPassword } =
@@ -42,22 +48,26 @@ export class AuthService implements IAuthService {
           );
         }
       }
-      
-        const hashedPassword = await passwordHash(password);
 
-        const newUser = await this._userRepository.create({
-            firstName,
-            lastName,
-            email,
-            phone,
-            password: hashedPassword
-        } as IUser);
+      const hashedPassword = await passwordHash(password);
 
-        const verificationEmailToken = emailVerificationToken(email);
+      const newUser = await this._userRepository.create({
+        firstName,
+        lastName,
+        email,
+        phone,
+        password: hashedPassword,
+      } as IUser);
 
-        await sendVerificationEmail({email, name: firstName + lastName, token: verificationEmailToken})
-        
-        return {
+      const verificationEmailToken = emailVerificationToken(email);
+
+      await sendVerificationEmail({
+        email,
+        name: firstName + lastName,
+        token: verificationEmailToken,
+      });
+
+      return {
         status: true,
         message: "Success! A verification link was sent to your inbox.",
         email: newUser.email,
@@ -66,12 +76,178 @@ export class AuthService implements IAuthService {
       if (error instanceof AppError) {
         throw error;
       }
-      
 
       throw new AppError(
         responseMessage.ERROR_MESSAGE,
         StatusCodes.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  async verifyEmail(email: string, token: string): Promise<SignInResponse> {
+    try {
+      const existingUser = await this._userRepository.findByEmail(email);
+      if (!existingUser) {
+        throw new AppError(
+          "User not found. Please register again.",
+          StatusCodes.NOT_FOUND,
+        );
+      }
+      if (existingUser && existingUser.is_verified) {
+        throw new AppError(
+          "Already verified email. Please login.",
+          StatusCodes.BAD_REQUEST,
+        );
+      }
+
+      const decodedEmail = verifyEmailToken(token);
+
+      if (decodedEmail !== email) {
+        throw new AppError(
+          "Verification link is invalid or expired. Please request a new one.",
+          StatusCodes.UNAUTHORIZED,
+        );
+      }
+
+      await this._userRepository.verifyUser(email, true);
+
+      const accessToken = generateAccessToken({ id: existingUser._id });
+      const refreshToken = generateRefreashToken({ id: existingUser._id });
+
+      return {
+        status: true,
+        message: "Email verified successfully",
+        email: existingUser.email,
+        accessToken,
+        refreshToken,
+      };
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+
+      console.error("Verify Email Error:", error);
+
+      throw new AppError(
+        responseMessage.ERROR_MESSAGE,
+        StatusCodes.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async signIn(data: SignInDTO): Promise<SignInResponse> {
+    try {
+      const { email, password } = data;
+      const existingUser = await this._userRepository.findByEmail(email);
+      if (!existingUser) {
+        throw new AppError("Invalid Credentials", StatusCodes.BAD_REQUEST);
+      }
+      if (!existingUser.is_verified) {
+        throw new AppError(
+          "Email not verified. Please verify your email.",
+          StatusCodes.UNAUTHORIZED,
+        );
+      }
+
+      const comparePassword = await bcrypt.compare(
+        password,
+        existingUser.password,
+      );
+      if (!comparePassword) {
+        throw new AppError("Incorrect password", StatusCodes.BAD_REQUEST);
+      }
+      const accessToken = generateAccessToken({ id: existingUser._id });
+      const refreshToken = generateRefreashToken({ id: existingUser._id });
+
+      return {
+        status: true,
+        message: "Sign in successfully completed",
+        userName: existingUser.firstName + " "+ existingUser.lastName,
+        email: existingUser.email,
+        accessToken,
+        refreshToken,
+      };
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+
+      console.error("SignIn Error:", error);
+
+      throw new AppError(
+        responseMessage.ERROR_MESSAGE,
+        StatusCodes.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async forgotPassword(data: ForgotPasswordDTO): Promise<AuthResponse>{
+    try {
+      const { email } = data;
+      const existingUser = await this._userRepository.findByEmail(email);
+      if (!existingUser) {
+        throw new AppError("User not found", StatusCodes.NOT_FOUND)
+      }
+      const resetToken = emailVerificationToken(email);
+
+      await sendPasswordResetEmail({
+        email,
+        name: existingUser.firstName + existingUser.lastName,
+        token: resetToken
+      })
+
+      return {
+        status: true,
+        message: "Password reset link sent to your email."
+      }
+
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+
+      console.error("Forgot Password Error:", error);
+      throw new AppError(
+        responseMessage.ERROR_MESSAGE,
+        StatusCodes.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+
+  async resetPassword(data: ResetPaswordDTO): Promise<AuthResponse>{
+    try {
+      const { email, token, newPassword, confirmPassword } = data;
+      if (newPassword !== confirmPassword) {
+        throw new AppError("Passwords do not match.", StatusCodes.BAD_REQUEST)
+      }
+      const existingUser = this._userRepository.findByEmail(email);
+      if (!existingUser) {
+        throw new AppError("User not found. Please register again.", StatusCodes.NOT_FOUND)
+      }
+      const decodedEmail = verifyEmailToken(token);
+
+      if (decodedEmail !== email) {
+        throw new AppError("Reset link is invalid or expired. Please request a new one.", StatusCodes.UNAUTHORIZED)
+      }
+
+      const hashedPassword = await passwordHash(newPassword);
+      await this._userRepository.updatePassword(email, hashedPassword)
+      return {
+        status: true,
+        message: "Password reset successfully. You can now sign in."
+      }
+    } catch (error) {
+        if (error instanceof AppError) {
+        throw error;
+      }
+
+      console.error("Reset Password Error:", error);
+      throw new AppError(
+        responseMessage.ERROR_MESSAGE,
+        StatusCodes.INTERNAL_SERVER_ERROR
+      );
+    
     }
   }
 }

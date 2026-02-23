@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 
 import dbConnect from "./config/dbConfig";
 import authRoute from "./routers/auth.routers";
+import { globalErrorHandler } from "./middlewares/error.middleware";
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -21,13 +23,18 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
+const morganFormat = ":method :url :status :response-time ms";
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(morgan(morganFormat));
 
 app.use('/auth', authRoute);
+
+app.use(globalErrorHandler);
+
 
 dbConnect()
   .then(() => {

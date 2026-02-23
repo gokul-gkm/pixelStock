@@ -2,50 +2,93 @@ import { Request, Response } from "express";
 import { IAuthController } from "../interfaces/auth.Icontroller";
 import Container, { Inject, Service } from "typedi";
 import { IAuthService } from "@/services/interfaces/auth.Iservice";
-import { signUpSchema } from "@/utils/validations/auth.validation";
 import { StatusCodes } from "http-status-codes";
-import { AppError } from "@/utils/customError.utils";
-import { responseMessage } from "@/enums/responseMessage";
-import { ZodError } from "zod";
 import { TOKENS } from "@/di/tokens";
+import { setCookie } from "@/utils/cookie.utils";
+import { email } from "zod";
+import { ForgotPasswordDTO, ResetPaswordDTO } from "@/dtos/auth.dto";
 
 @Service()
 export class AuthController implements IAuthController {
   constructor(
     @Inject(TOKENS.AuthService)
-    private authService: IAuthService
-  ) { }
+    private authService: IAuthService,
+  ) {}
+  signUp = async (req: Request, res: Response) => {
+    const user = await this.authService.signUp(req.body);
 
-  async signUp(req: Request, res: Response): Promise<Response> {
-    try {
-      const parsedData = signUpSchema.parse(req.body);
-      const user = await this.authService.signUp(parsedData);
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ status: true, message: "Signup successful", data: user });
+  };
 
-      return res
-        .status(StatusCodes.CREATED)
-        .json({ status: true, message: "Signup successful", data: user });
-    } catch (error) {
-      if (error instanceof AppError) {
-        console.log(error.message);
-        return res.status(error.statusCode).json({
-          status: false,
-          message: error.message,
-        });
-      }
+  verifyEmail = async (req: Request, res: Response): Promise<Response> => {
+    const email = req.query.email as string;
+    const token = req.query.token as string;
 
-      if (error instanceof ZodError) {
-  return res.status(StatusCodes.BAD_REQUEST).json({
-    status: false,
-    message: "Validation failed",
-    errors: error.flatten(),
-  });
-}
-
-      console.error("Unexpected Error (signUp):", error);
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ status: false, message: responseMessage.ERROR_MESSAGE });
+    if (!email || !token) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        status: false,
+        message: "Email and token required for verification",
+      });
     }
+    const result = await this.authService.verifyEmail(email, token);
+
+    return res.status(StatusCodes.OK).json({
+      status: true,
+      message: result.message,
+      email: result.email,
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+    });
+  };
+
+  signIn = async (req: Request, res: Response): Promise<Response> => {
+    const result = await this.authService.signIn(req.body);
+    setCookie(res, "refresh_token", String(result.refreshToken));
+
+    return res.status(StatusCodes.OK).json({
+      status: true,
+      message: result.message,
+      email: result.email,
+      userName: result.userName,
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+    });
+  };
+
+  forgotPassword = async (req: Request, res: Response): Promise<Response> => {
+    const data = req.body as ForgotPasswordDTO;
+    if (!data.email) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        status: false,
+        message: "Email is required"
+      })
+    }
+
+    const result = await this.authService.forgotPassword(data)
+
+    return res.status(StatusCodes.OK).json(result)
+  }
+
+  resetPassword = async (req: Request, res: Response): Promise<Response> => {
+    const data = req.body as ResetPaswordDTO;
+    if (!data.email || !data.token || !data.newPassword || !data.confirmPassword) {
+      return res.status(StatusCodes.BAD_REQUEST).json({status: false, message: "Email, token and password fields are required"})
+    }
+    const result = await this.authService.resetPassword(data);
+
+    return res.status(StatusCodes.OK).json(result)
+  }
+
+  logOut = async (req: Request, res: Response): Promise<Response> => {
+    const refreshToken = req.cookies.refresh_token;
+    if (!refreshToken) {
+      return res.status(StatusCodes.BAD_REQUEST).json({message: "No token provided"})
+    }
+    res.clearCookie("refresh_token");
+
+    return res.status(StatusCodes.OK).json({message: "Logged out successfully"})
   }
 }
 

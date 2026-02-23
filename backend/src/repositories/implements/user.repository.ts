@@ -17,4 +17,27 @@ export class UserRepository extends BaseRepository<IUser> implements IUserReposi
           return Promise.reject(new Error(`Error fetching user by email ${error}`));
         }
     }
+
+    async verifyUser(email: string, is_verified: boolean): Promise<IUser | null | never> {
+        try {
+            return await User.findOneAndUpdate(
+                { email },
+                { $set: { is_verified: is_verified } }
+            );
+        } catch (error) {
+            return Promise.reject(
+                new Error(`Error while verifiying the user ${error}`)
+            );
+        }
+    }
+
+    async updatePassword( email: string, password: string): Promise<IUser | null | never>{
+        try {
+            return await User.findOneAndUpdate({email}, {$set: {password: password}})
+        } catch (error) {
+            return Promise.reject(
+                new Error(`Error while updating the user password ${error}`)
+            )
+        }
+  }
 }

@@ -15,7 +15,15 @@ export const signUpSchema = z
       .refine((value) => (value.match(/[a-zA-Z]/g)?.length ?? 0) >= 3, {
         message: "Name must contain at least 3 letters",
       }),
-    lastName: z.string().trim().min(1, "Last name is required"),
+    lastName: z
+      .string()
+      .trim()
+      .min(1, "Last name is required")
+      .max(40, "Last name must not exceed 40 characters")
+      .regex(
+        /^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$/,
+        "Last name can contain letters, numbers, and single spaces only",
+      ),
     email: z
       .string()
       .trim()
@@ -58,3 +66,15 @@ export const signUpSchema = z
       });
     }
   });
+
+
+  export const signInSchema = z.object({
+  email: z.string().email("Invalid email format"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .regex(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]/,
+      "Password must contain at least one letter and one number"
+    ),
+});

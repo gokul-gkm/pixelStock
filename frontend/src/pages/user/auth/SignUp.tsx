@@ -21,7 +21,8 @@ export default function SignUp() {
         control,
         reset,
     } = useForm<SignupSchemaType>({
-        resolver: zodResolver(signUpSchema)
+        resolver: zodResolver(signUpSchema),
+        mode: "onChange",
     })
     
     const onSubmit = async (data: SignupSchemaType) => {
