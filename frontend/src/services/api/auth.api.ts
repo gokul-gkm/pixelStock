@@ -30,6 +30,16 @@ export const authService = {
       throw new Error(extractErrorMessage(error));
     }
   },
+  resendEmailVerification: async (email: string) => {
+    try {
+      const res = await publicAxiosInstance.patch(
+        `/auth/resend-verification`, { email }
+      );
+      return res;
+    } catch (error) {
+      throw new Error(extractErrorMessage(error));
+    }
+  },
 
   forgotPassword: async (email: string) => {
     try {

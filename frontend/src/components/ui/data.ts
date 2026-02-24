@@ -1,4 +1,3 @@
-/* ─── MOCK GALLERY DATA ─────────────────────────────────────── */
 export const IMAGES = [
   { id: 1, bg: "linear-gradient(135deg,#667EEA,#764BA2)", h: 200, label: "Mountain Mist", priv: false },
   { id: 2, bg: "linear-gradient(135deg,#F093FB,#F5576C)", h: 260, label: "Bloom",         priv: false },

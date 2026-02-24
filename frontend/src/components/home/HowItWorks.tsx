@@ -6,7 +6,6 @@ import { IMAGES } from "../ui/data";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
 
-/* ─── UPLOAD VISUAL ─────────────────────────────────────────── */
 function UploadVisual() {
   const [tog, setTog] = useState(false);
   useEffect(() => {
@@ -52,7 +51,6 @@ function UploadVisual() {
   );
 }
 
-/* ─── EXPLORE VISUAL ────────────────────────────────────────── */
 function ExploreVisual() {
   const items = [
     { bg: "linear-gradient(135deg,#667EEA,#764BA2)", h: 64 },
@@ -77,7 +75,6 @@ function ExploreVisual() {
   );
 }
 
-/* ─── DRAG VISUAL ───────────────────────────────────────────── */
 export function DragVisual() {
   const cards = [
     { id: "a", bg: "linear-gradient(135deg,#667EEA,#764BA2)", x: 0,  y: 0  },
@@ -121,7 +118,6 @@ export function DragVisual() {
   );
 }
 
-/* ─── MASONRY GRID ──────────────────────────────────────────── */
 export function MasonrySection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -154,7 +150,6 @@ export function MasonrySection() {
   );
 }
 
-/* ─── HOW IT WORKS — ICON DEFINITIONS ──────────────────────── */
 const HOW_CARDS = [
   {
     icon: (
@@ -210,7 +205,6 @@ const HOW_CARDS = [
   },
 ];
 
-/* ─── HOW IT WORKS SECTION ──────────────────────────────────── */
 export default function HowItWorks() {
   return (
     <Section className="py-20 sm:py-28 md:py-36" id="how">

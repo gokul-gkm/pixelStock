@@ -12,7 +12,6 @@ import { toast } from "sonner";
 
 
 export default function SignUp() {
-    // const [phone, setPhone] = useState<string | undefined>();
 
     const {
         register,

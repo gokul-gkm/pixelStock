@@ -42,6 +42,18 @@ export class AuthController implements IAuthController {
     });
   };
 
+  resendVerification = async (req: Request, res: Response): Promise<Response> => {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        status: false,
+        message: "Email is required",
+      });
+    }
+    const result = await this.authService.resendVerification(email);
+    return res.status(StatusCodes.OK).json(result);
+  };
+
   signIn = async (req: Request, res: Response): Promise<Response> => {
     const result = await this.authService.signIn(req.body);
     setCookie(res, "refresh_token", String(result.refreshToken));

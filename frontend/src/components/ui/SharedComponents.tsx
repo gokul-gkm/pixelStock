@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { C } from "./palette";
 
-/* ─── FADE UP ANIMATION WRAPPER ─────────────────────────────── */
 export function FadeUp({
   children,
   delay = 0,
@@ -27,7 +26,6 @@ export function FadeUp({
   );
 }
 
-/* ─── SECTION LABEL BADGE ───────────────────────────────────── */
 export function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div
@@ -45,7 +43,6 @@ export function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-/* ─── CENTERED SECTION HEADER ───────────────────────────────── */
 export function SectionHeader({
   label,
   title,
@@ -82,7 +79,6 @@ export function SectionHeader({
   );
 }
 
-/* ─── SECTION WRAPPER ───────────────────────────────────────── */
 export function Section({
   children,
   className = "",
@@ -103,7 +99,6 @@ export function Section({
   );
 }
 
-/* ─── GLASS CARD ────────────────────────────────────────────── */
 export function GlassCard({
   children,
   className = "",
@@ -133,7 +128,6 @@ export function GlassCard({
   );
 }
 
-/* ─── PRIVACY TOGGLE ────────────────────────────────────────── */
 export function PrivacyToggle({ initial }: { initial: boolean }) {
   const [pub, setPub] = useState(initial);
   return (

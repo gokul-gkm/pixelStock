@@ -23,7 +23,6 @@ export default function AuthLayout({
       className="min-h-screen w-full flex items-center justify-center p-5 relative overflow-hidden"
       style={{ background: C.bg }}
     >
-      {/* Decorative blurred gradients */}
       <div 
         className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full blur-[120px] opacity-20 pointer-events-none"
         style={{ background: C.accent1 }}

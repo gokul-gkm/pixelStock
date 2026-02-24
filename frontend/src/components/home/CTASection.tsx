@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { C } from "../ui/palette";
 import { FadeUp, Section } from "../ui/SharedComponents";
+import { Link } from "react-router-dom";
 
 export default function CTASection() {
   return (
@@ -10,7 +11,6 @@ export default function CTASection() {
           className="relative rounded-3xl overflow-hidden text-center"
           style={{ background: "linear-gradient(135deg,#7C5CFC 0%,#A855F7 45%,#FF6B6B 100%)" }}
         >
-          {/* Subtle inner glow blobs */}
           <div
             className="absolute -top-24 -left-24 w-72 h-72 rounded-full opacity-25 pointer-events-none"
             style={{ background: "radial-gradient(circle,#fff,transparent 70%)" }}
@@ -40,6 +40,7 @@ export default function CTASection() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link to="/auth/sign-up">
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 16px 48px rgba(0,0,0,0.22)" }}
                 whileTap={{ scale: 0.97 }}
@@ -47,7 +48,9 @@ export default function CTASection() {
                 style={{ background: "#fff", color: C.accent1 }}
               >
                 Get Started Free →
-              </motion.button>
+                </motion.button>
+                </Link>
+              <Link to="/dashboard">
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
@@ -55,7 +58,8 @@ export default function CTASection() {
                 style={{ borderColor: "rgba(255,255,255,0.45)" }}
               >
                 Explore Gallery
-              </motion.button>
+                </motion.button>
+                </Link>
             </div>
           </div>
         </div>

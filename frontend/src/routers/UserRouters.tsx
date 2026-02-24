@@ -9,11 +9,16 @@ import { ProtectedRoute } from "../hoc/ProtectedRoute";
 import ForgotPasswordPage from "../pages/user/auth/ForgotPassword";
 import ResetPasswordPage from "../pages/user/auth/ResetPassword";
 import { Profile } from "../pages/user/profile/Profile";
+import ExplorePage from "../pages/user/explore/Explore";
 
 export const UserRoutes: RouteObject[] = [
   {
     path: "",
     element: <Home />,
+  },
+  {
+    path: "explore",
+    element: <ExplorePage />,
   },
   {
     path: "/auth",

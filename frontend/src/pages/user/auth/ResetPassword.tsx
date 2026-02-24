@@ -8,8 +8,6 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { resetSchema, type ResetSchemaType } from "../../../lib/validations/auth.z.validation";
 import { C } from "../../../components/ui/palette";
 
-
-/* ─── EYE ICON ────────────────────────────────────────────── */
 function EyeIcon({ open }: { open: boolean }) {
   return open ? (
     <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -24,7 +22,6 @@ function EyeIcon({ open }: { open: boolean }) {
   );
 }
 
-/* ─── PASSWORD INPUT ──────────────────────────────────────── */
 function PasswordInput({
   placeholder,
   hasError,
@@ -69,7 +66,6 @@ function PasswordInput({
   );
 }
 
-/* ─── PAGE ────────────────────────────────────────────────── */
 export default function ResetPasswordPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -121,7 +117,6 @@ export default function ResetPasswordPage() {
         .display { font-family: 'Sora', sans-serif; }
       `}</style>
 
-      {/* ── Ambient blobs ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
           animate={{ scale: [1, 1.25, 1], opacity: [0.10, 0.20, 0.10] }}
@@ -137,7 +132,6 @@ export default function ResetPasswordPage() {
         />
       </div>
 
-      {/* ── Card ── */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -152,7 +146,6 @@ export default function ResetPasswordPage() {
           boxShadow: "0 24px 64px rgba(124,92,252,0.11), 0 4px 20px rgba(0,0,0,0.05)",
         }}
       >
-        {/* ── Logo ── */}
         <motion.div variants={itemVariants} className="flex justify-center mb-6">
           <Link to="/" className="flex items-center gap-2">
             <div
@@ -172,12 +165,10 @@ export default function ResetPasswordPage() {
           </Link>
         </motion.div>
 
-        {/* ── Divider ── */}
         <motion.div variants={itemVariants}>
           <div className="h-px w-full mb-6" style={{ background: C.border }} />
         </motion.div>
 
-        {/* ── Icon ── */}
         <motion.div variants={itemVariants} className="flex justify-center mb-5">
           <div
             className="w-16 h-16 rounded-2xl flex items-center justify-center"
@@ -204,7 +195,6 @@ export default function ResetPasswordPage() {
           </div>
         </motion.div>
 
-        {/* ── Heading ── */}
         <motion.div variants={itemVariants} className="text-center mb-6">
           <h1 className="display font-bold text-2xl sm:text-3xl mb-1.5" style={{ color: C.text }}>
             {invalidLink ? "Invalid Reset Link" : "Reset Password"}
@@ -216,7 +206,6 @@ export default function ResetPasswordPage() {
           </p>
         </motion.div>
 
-        {/* ── Invalid link state ── */}
         <AnimatePresence>
           {invalidLink && (
             <motion.div
@@ -234,11 +223,9 @@ export default function ResetPasswordPage() {
           )}
         </AnimatePresence>
 
-        {/* ── Form ── */}
         {!invalidLink && (
           <form onSubmit={handleSubmit(onSubmit)}>
 
-            {/* Read-only email */}
             <motion.div variants={itemVariants} className="mb-4">
               <label className="block text-xs font-semibold mb-1.5" style={{ color: C.muted }}>
                 Email address
@@ -257,7 +244,6 @@ export default function ResetPasswordPage() {
               />
             </motion.div>
 
-            {/* New password */}
             <motion.div variants={itemVariants} className="mb-4">
               <label className="block text-xs font-semibold mb-1.5" style={{ color: C.muted }}>
                 New password
@@ -278,7 +264,6 @@ export default function ResetPasswordPage() {
               )}
             </motion.div>
 
-            {/* Confirm password */}
             <motion.div variants={itemVariants} className="mb-5">
               <label className="block text-xs font-semibold mb-1.5" style={{ color: C.muted }}>
                 Confirm new password
@@ -299,7 +284,6 @@ export default function ResetPasswordPage() {
               )}
             </motion.div>
 
-            {/* Submit */}
             <motion.div variants={itemVariants}>
               <motion.button
                 type="submit"
@@ -331,7 +315,6 @@ export default function ResetPasswordPage() {
           </form>
         )}
 
-        {/* ── Forgot password link (invalid state only) ── */}
         <AnimatePresence>
           {invalidLink && (
             <motion.div
@@ -349,7 +332,6 @@ export default function ResetPasswordPage() {
           )}
         </AnimatePresence>
 
-        {/* ── Back to login ── */}
         <motion.div variants={itemVariants} className="mt-5 text-center">
           <p className="text-xs" style={{ color: C.muted }}>
             Remembered your password?{" "}

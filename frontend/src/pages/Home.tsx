@@ -6,7 +6,6 @@ import WhyPixelStock from "../components/home/WhyPixelStock";
 import CTASection from "../components/home/CTASection";
 import Footer from "../components/layouts/Footer";
 
-/* ─── HOME PAGE ─────────────────────────────────────────────── */
 export default function Home() {
   return (
     <div

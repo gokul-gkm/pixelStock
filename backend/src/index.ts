@@ -11,6 +11,7 @@ import authRoute from "./routers/auth.routers";
 import { globalErrorHandler } from "./middlewares/error.middleware";
 import morgan from 'morgan';
 import userRoute from "./routers/user.routers";
+import imageRoute from "./routers/image.routers";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use(morgan(morganFormat));
 
 app.use('/auth', authRoute);
 app.use('/users', userRoute);
+app.use('/images', imageRoute);
 
 app.use(globalErrorHandler);
 

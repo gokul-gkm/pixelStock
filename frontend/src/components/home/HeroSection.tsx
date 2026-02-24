@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import { C } from "../ui/palette";
 import { Section } from "../ui/SharedComponents";
-import HeroMockup from "./HeroMockup";
+import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
+  const navigate = useNavigate();
   return (
     <Section className="relative overflow-hidden pt-32 sm:pt-36 md:pt-44 pb-20 sm:pb-28 md:pb-36">
-      {/* Ambient background blobs — contained, no overflow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
         <div
           className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-[0.18] blur-[100px]"
@@ -23,7 +23,6 @@ export default function HeroSection() {
       </div>
 
       <div className="relative z-10 flex flex-col items-center text-center gap-0">
-        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -45,7 +44,6 @@ export default function HeroSection() {
           Your Creative Canvas
         </motion.div>
 
-        {/* Heading */}
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -70,7 +68,6 @@ export default function HeroSection() {
           Your Images Beautifully
         </motion.h1>
 
-        {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -83,7 +80,6 @@ export default function HeroSection() {
           Build a stunning personal gallery. Drag, drop, and rearrange — your way.
         </motion.p>
 
-        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -91,6 +87,8 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row gap-3 items-center mb-16 sm:mb-20 w-full sm:w-auto"
         >
           <motion.button
+            onClick={()=> navigate('/auth/sign-up')}
+
             whileHover={{ scale: 1.05, boxShadow: "0 20px 48px rgba(124,92,252,0.38)" }}
             whileTap={{ scale: 0.97 }}
             className="w-full sm:w-auto px-8 py-4 rounded-2xl font-semibold text-white text-sm sm:text-base"
@@ -104,6 +102,7 @@ export default function HeroSection() {
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
+            onClick={()=> navigate('/explore')}
             className="w-full sm:w-auto px-8 py-4 rounded-2xl font-semibold text-sm sm:text-base border"
             style={{
               background: "rgba(255,255,255,0.92)",
@@ -115,22 +114,6 @@ export default function HeroSection() {
             🔍 Explore Images
           </motion.button>
         </motion.div>
-
-        {/* Hero Mockup — full width, constrained max */}
-        <div className="w-full max-w-3xl mx-auto">
-          <HeroMockup />
-        </div>
-
-        {/* Social proof */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.3 }}
-          className="mt-10 text-xs sm:text-sm font-medium"
-          style={{ color: C.muted }}
-        >
-          No credit card required · Free forever · 10,000+ creators joined
-        </motion.p>
       </div>
     </Section>
   );

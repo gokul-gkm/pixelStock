@@ -17,7 +17,6 @@ export default function WhyPixelStock() {
         title={<>Built for creators<br className="hidden sm:block" /> who care about craft.</>}
       />
 
-      {/* Feature cards: 1 → 2 → 4 col */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {WHY_ITEMS.map((item, i) => (
           <FadeUp key={item.title} delay={i * 0.08}>
@@ -41,7 +40,6 @@ export default function WhyPixelStock() {
         ))}
       </div>
 
-      {/* Stats strip */}
       <FadeUp delay={0.28}>
         <div
           className="mt-8 sm:mt-10 rounded-2xl p-6 sm:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center border"

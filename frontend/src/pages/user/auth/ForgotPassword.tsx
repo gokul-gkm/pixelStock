@@ -7,8 +7,6 @@ import { Link } from "react-router-dom";
 import { forgotSchema, type ForgotSchemaType } from "../../../lib/validations/auth.z.validation";
 import { C } from "../../../components/ui/palette";
 
-
-/* ─── PAGE ────────────────────────────────────────────────── */
 export default function ForgotPasswordPage() {
   const {
     register,
@@ -74,7 +72,6 @@ export default function ForgotPasswordPage() {
         />
       </div>
 
-      {/* ── Card ── */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -89,7 +86,6 @@ export default function ForgotPasswordPage() {
           boxShadow: "0 24px 64px rgba(124,92,252,0.11), 0 4px 20px rgba(0,0,0,0.05)",
         }}
       >
-        {/* ── Logo ── */}
         <motion.div variants={itemVariants} className="flex justify-center mb-6">
           <Link to="/" className="flex items-center gap-2">
             <div
@@ -109,12 +105,10 @@ export default function ForgotPasswordPage() {
           </Link>
         </motion.div>
 
-        {/* ── Divider ── */}
         <motion.div variants={itemVariants}>
           <div className="h-px w-full mb-6" style={{ background: C.border }} />
         </motion.div>
 
-        {/* ── Icon ── */}
         <motion.div variants={itemVariants} className="flex justify-center mb-5">
           <div
             className="w-16 h-16 rounded-2xl flex items-center justify-center"
@@ -131,7 +125,6 @@ export default function ForgotPasswordPage() {
           </div>
         </motion.div>
 
-        {/* ── Heading ── */}
         <motion.div variants={itemVariants} className="text-center mb-6">
           <h1 className="display font-bold text-2xl sm:text-3xl mb-1.5" style={{ color: C.text }}>
             Forgot Password?
@@ -141,9 +134,7 @@ export default function ForgotPasswordPage() {
           </p>
         </motion.div>
 
-        {/* ── Form ── */}
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* Email field */}
           <motion.div variants={itemVariants} className="mb-4">
             <label className="block text-xs font-semibold mb-1.5" style={{ color: C.muted }}>
               Email address
@@ -177,7 +168,6 @@ export default function ForgotPasswordPage() {
             )}
           </motion.div>
 
-          {/* Submit */}
           <motion.div variants={itemVariants}>
             <motion.button
               type="submit"
@@ -208,7 +198,6 @@ export default function ForgotPasswordPage() {
           </motion.div>
         </form>
 
-        {/* ── Back to login ── */}
         <motion.div variants={itemVariants} className="mt-5 text-center">
           <p className="text-xs" style={{ color: C.muted }}>
             Remembered your password?{" "}

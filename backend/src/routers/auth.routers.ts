@@ -10,6 +10,7 @@ authRoute.post('/sign-up', validate(signUpSchema), asyncHandler(authController.s
 authRoute.post('/sign-in', validate(signInSchema), asyncHandler(authController.signIn));
 
 authRoute.patch('/verify-email', asyncHandler(authController.verifyEmail));
+authRoute.post('/resend-verification', asyncHandler(authController.resendVerification));
 authRoute.post('/logout', asyncHandler(authController.logOut))
 
 authRoute.post('/forgot-password', asyncHandler(authController.forgotPassword))

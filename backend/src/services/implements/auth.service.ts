@@ -135,6 +135,34 @@ export class AuthService implements IAuthService {
     }
   }
 
+  async resendVerification(email: string): Promise<AuthResponse> {
+    try {
+      const existingUser = await this._userRepository.findByEmail(email);
+      if (!existingUser) {
+        throw new AppError("No account found with this email address.", StatusCodes.NOT_FOUND);
+      }
+      if (existingUser.is_verified) {
+        throw new AppError("This email is already verified. Please sign in.", StatusCodes.BAD_REQUEST);
+      }
+
+      const token = emailVerificationToken(email);
+      await sendVerificationEmail({
+        email,
+        name: existingUser.firstName + existingUser.lastName,
+        token,
+      });
+
+      return {
+        status: true,
+        message: "Verification email resent. Please check your inbox.",
+      };
+    } catch (error) {
+      if (error instanceof AppError) throw error;
+      console.error("Resend Verification Error:", error);
+      throw new AppError(responseMessage.ERROR_MESSAGE, StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async signIn(data: SignInDTO): Promise<SignInResponse> {
     try {
       const { email, password } = data;

@@ -3,7 +3,6 @@ import { FadeUp, SectionHeader, Section, GlassCard, PrivacyToggle } from "../ui/
 import { IMAGES } from "../ui/data";
 import { MasonrySection, DragVisual } from "./HowItWorks";
 
-/* ─── FEATURE HIGHLIGHT SECTION ─────────────────────────────── */
 export default function FeatureHighlight() {
   return (
     <Section
@@ -18,7 +17,6 @@ export default function FeatureHighlight() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-start">
-        {/* Left — Masonry gallery */}
         <FadeUp>
           <GlassCard className="overflow-hidden p-5 sm:p-6" hover={false}>
             <div className="flex items-center justify-between mb-5">
@@ -44,9 +42,7 @@ export default function FeatureHighlight() {
           </GlassCard>
         </FadeUp>
 
-        {/* Right column — two stacked cards */}
         <div className="flex flex-col gap-5 sm:gap-6">
-          {/* Privacy Controls */}
           <FadeUp delay={0.1}>
             <GlassCard className="p-5 sm:p-6">
               <h4 className="font-semibold text-sm mb-4" style={{ color: C.text }}>
@@ -76,7 +72,6 @@ export default function FeatureHighlight() {
             </GlassCard>
           </FadeUp>
 
-          {/* Custom Arrangement */}
           <FadeUp delay={0.18}>
             <GlassCard className="p-5 sm:p-6">
               <div className="flex items-center justify-between mb-4">

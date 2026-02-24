@@ -1,4 +1,3 @@
-/* ─── SHARED PALETTE ───────────────────────────────────────── */
 export const C = {
   bg: "#F8F7FF",
   surface: "#FFFFFF",

@@ -6,7 +6,6 @@ import { useAuthStore } from "../../store/auth.store";
 import { authService } from "../../services/api/auth.api";
 
 
-/* ─── NAVBAR ────────────────────────────────────────────────── */
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -16,15 +15,12 @@ export default function Navbar() {
 
   const { isAuthenticated, userName, email, logout } = useAuthStore();
 
-  console.log(isAuthenticated, userName, email);
-
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", h);
     return () => window.removeEventListener("scroll", h);
   }, []);
 
-  // Close profile dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
@@ -58,7 +54,6 @@ export default function Navbar() {
           }`}
           style={{ borderColor: scrolled ? "rgba(124,92,252,0.12)" : "transparent" }}
         >
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 shrink-0">
             <div
               className="w-8 h-8 rounded-xl flex items-center justify-center"
@@ -79,11 +74,9 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop right side */}
           <div className="hidden md:flex items-center gap-1">
-            {/* Explore link */}
             <a
-              href="#"
+              href="/explore"
               className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-colors hover:bg-gray-100"
               style={{ color: C.text }}
             >
@@ -91,14 +84,12 @@ export default function Navbar() {
               Explore
             </a>
 
-            {/* Divider */}
             <div
               className="w-px h-5 mx-1"
               style={{ background: "rgba(120,100,220,0.15)" }}
             />
 
             {isAuthenticated && userName ? (
-              /* ── LOGGED IN: profile avatar + dropdown ── */
               <div className="relative" ref={profileRef}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -134,7 +125,6 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
             ) : (
-              /* ── LOGGED OUT: sign in + get started ── */
               <>
                 <Link
                   to="/auth/sign-in"
@@ -159,7 +149,6 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile: avatar + hamburger (logged in) OR just hamburger (logged out) */}
           <div className="md:hidden flex items-center gap-2">
             {isAuthenticated && userName && (
               <button
@@ -204,7 +193,6 @@ export default function Navbar() {
   );
 }
 
-/* ─── COMPASS ICON ──────────────────────────────────────────── */
 function CompassIcon() {
   return (
     <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -214,7 +202,6 @@ function CompassIcon() {
   );
 }
 
-/* ─── AVATAR ─────────────────────────────────────────────────── */
 function Avatar({ name }: { name: string }) {
   const initials = name
     .split(" ")
@@ -232,7 +219,6 @@ function Avatar({ name }: { name: string }) {
   );
 }
 
-/* ─── PROFILE DROPDOWN ───────────────────────────────────────── */
 function ProfileDropdown({
   userName,
   email,
@@ -256,7 +242,6 @@ function ProfileDropdown({
         boxShadow: "0 12px 48px rgba(124,92,252,0.14), 0 2px 8px rgba(0,0,0,0.06)",
       }}
     >
-      {/* User info */}
       <div className="px-5 pt-5 pb-4" style={{ borderBottom: "1px solid rgba(124,92,252,0.08)" }}>
         <div className="flex items-center gap-3">
           <Avatar name={userName} />
@@ -271,7 +256,6 @@ function ProfileDropdown({
         </div>
       </div>
 
-      {/* Actions */}
       <div className="p-2">
         <Link
           to="/profile"
@@ -299,7 +283,6 @@ function ProfileDropdown({
   );
 }
 
-/* ─── MOBILE SLIDE-IN DRAWER ────────────────────────────────── */
 function MobileMenu({
   open,
   onClose,
@@ -338,7 +321,6 @@ function MobileMenu({
               borderLeft: "1px solid rgba(124,92,252,0.10)",
             }}
           >
-            {/* Header */}
             <div
               className="flex items-center justify-between px-6 py-5 border-b"
               style={{ borderColor: "rgba(124,92,252,0.08)" }}
@@ -371,10 +353,9 @@ function MobileMenu({
               </button>
             </div>
 
-            {/* Links */}
             <nav className="flex-1 flex flex-col gap-1 px-4 py-6">
               <a
-                href="#"
+                href="/explore"
                 onClick={onClose}
                 className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-colors hover:bg-purple-50"
                 style={{ color: C.text }}
@@ -384,11 +365,9 @@ function MobileMenu({
               </a>
             </nav>
 
-            {/* Footer — profile or auth CTAs */}
             <div className="px-5 pb-8">
               {isAuthenticated && userName ? (
                 <>
-                  {/* Profile card */}
                   <div
                     className="flex items-center gap-3 p-4 rounded-2xl mb-3"
                     style={{

@@ -1,6 +1,5 @@
 import type { ToasterProps } from "sonner";
 
-/* ─── THEMED TOAST ICONS ──────────────────────────────────── */
 const iconBox = (gradient: string, shadow: string, children: React.ReactNode) => (
   <div
     style={{
@@ -61,7 +60,6 @@ export const toastIcons: ToasterProps["icons"] = {
   ),
 };
 
-/* ─── THEMED TOAST OPTIONS ────────────────────────────────── */
 export const toastOptions: ToasterProps["toastOptions"] = {
   duration: 3500,
   classNames: {

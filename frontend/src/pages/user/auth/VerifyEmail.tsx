@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { toast } from "sonner";
-import { publicAxiosInstance } from "../../../services/axios";
 import { authService } from "../../../services/api/auth.api";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { C } from "../../../components/ui/palette";
@@ -9,7 +8,6 @@ import { C } from "../../../components/ui/palette";
 
 type Status = "idle" | "verifying" | "success" | "error";
 
-/* ─── STATUS ICON ─────────────────────────────────────────── */
 function StatusIcon({ status }: { status: Status }) {
   const configs = {
     idle: {
@@ -67,14 +65,11 @@ function StatusIcon({ status }: { status: Status }) {
         transition={{ type: "spring", stiffness: 200, damping: 18 }}
         className="relative flex items-center justify-center mx-auto"
         style={{ width: 80, height: 80 }}>
-        {/* Outer ring */}
         <div className="absolute inset-0 rounded-full" style={{ background: cfg.ring }} />
-        {/* Inner circle */}
         <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
           style={{ background: cfg.gradient, boxShadow: `0 8px 24px ${cfg.ring}` }}>
           {cfg.icon}
         </div>
-        {/* Success sparkle */}
         {status === "success" && (
           <>
             {[0, 60, 120, 180, 240, 300].map((deg, i) => (
@@ -92,7 +87,6 @@ function StatusIcon({ status }: { status: Status }) {
   );
 }
 
-/* ─── MAIN PAGE ───────────────────────────────────────────── */
 export default function VerifyEmailPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -117,7 +111,7 @@ export default function VerifyEmailPage() {
         setVerificationStatus("success");
         setMessage(res.message || "Email verified successfully!");
         toast.success("Email verified successfully!");
-        setTimeout(() => navigate("/auth/login"), 3000);
+        setTimeout(() => navigate("/auth/sign-in"), 3000);
       } else {
         setVerificationStatus("error");
         setMessage(res.message || "Verification failed. Please try again.");
@@ -136,7 +130,7 @@ export default function VerifyEmailPage() {
     try {
       setVerificationStatus("verifying");
       setMessage("Sending verification email...");
-      const res = await publicAxiosInstance.post("/auth/resend-verification", { email });
+      const res = await authService.resendEmailVerification(email as string);
       if (res && res.status) {
         setVerificationStatus("idle");
         setMessage("Verification email sent! Please check your inbox.");
@@ -154,7 +148,6 @@ export default function VerifyEmailPage() {
     }
   };
 
-  /* ── title & subtitle maps ── */
   const titles: Record<Status, string> = {
     idle: "Verify Your Email",
     verifying: "Verifying...",
@@ -168,7 +161,6 @@ export default function VerifyEmailPage() {
     error: "Something went wrong",
   };
 
-  /* ── status message styles ── */
   const msgStyle: Record<Status, { bg: string; border: string; color: string }> = {
     idle:      { bg: "rgba(124,92,252,0.05)", border: "rgba(124,92,252,0.15)", color: C.muted },
     verifying: { bg: "rgba(124,92,252,0.05)", border: "rgba(124,92,252,0.15)", color: C.muted },
@@ -196,7 +188,6 @@ export default function VerifyEmailPage() {
         .display { font-family: 'Sora', sans-serif; }
       `}</style>
 
-      {/* ── Ambient blobs ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
           animate={{ scale: [1, 1.3, 1], opacity: [0.12, 0.22, 0.12] }}
@@ -215,7 +206,6 @@ export default function VerifyEmailPage() {
           style={{ background: "radial-gradient(circle,#FF6B6B,transparent)" }} />
       </div>
 
-      {/* ── Card ── */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -230,7 +220,6 @@ export default function VerifyEmailPage() {
           padding: "36px 32px",
         }}>
 
-        {/* ── Logo mark ── */}
         <motion.div variants={itemVariants} className="flex justify-center mb-6">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl flex items-center justify-center"
@@ -246,17 +235,14 @@ export default function VerifyEmailPage() {
           </div>
         </motion.div>
 
-        {/* ── Divider ── */}
         <motion.div variants={itemVariants}>
           <div className="h-px w-full mb-6" style={{ background: C.border }} />
         </motion.div>
 
-        {/* ── Icon ── */}
         <motion.div variants={itemVariants} className="mb-5">
           <StatusIcon status={verificationStatus} />
         </motion.div>
 
-        {/* ── Title & subtitle ── */}
         <motion.div variants={itemVariants} className="text-center mb-5">
           <AnimatePresence mode="wait">
             <motion.h1 key={titles[verificationStatus]}
@@ -277,7 +263,6 @@ export default function VerifyEmailPage() {
           </AnimatePresence>
         </motion.div>
 
-        {/* ── Status message box ── */}
         <motion.div variants={itemVariants} className="mb-5">
           <AnimatePresence mode="wait">
             <motion.div key={message}
@@ -298,7 +283,6 @@ export default function VerifyEmailPage() {
           </AnimatePresence>
         </motion.div>
 
-        {/* ── Success redirect bar ── */}
         <AnimatePresence>
           {verificationStatus === "success" && (
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0 }}
@@ -318,7 +302,6 @@ export default function VerifyEmailPage() {
           )}
         </AnimatePresence>
 
-        {/* ── Action buttons ── */}
         <motion.div variants={itemVariants} className="flex flex-col gap-3">
           {verificationStatus === "idle" && (
             <motion.button onClick={verifyEmail}
@@ -360,7 +343,6 @@ export default function VerifyEmailPage() {
           )}
         </motion.div>
 
-        {/* ── Email display ── */}
         {email && (
           <motion.div variants={itemVariants} className="mt-5 px-4 py-2.5 rounded-xl text-center"
             style={{ background: "rgba(124,92,252,0.04)", border: `1px solid rgba(124,92,252,0.10)` }}>
@@ -371,7 +353,6 @@ export default function VerifyEmailPage() {
           </motion.div>
         )}
 
-        {/* ── Back to login ── */}
         <motion.div variants={itemVariants} className="mt-5 text-center">
           <Link to="/auth/login"
             className="text-xs font-medium transition-colors"

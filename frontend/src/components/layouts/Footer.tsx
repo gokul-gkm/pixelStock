@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { C } from "../ui/palette";
 
 export default function Footer() {
-  const navLinks = ["Explore", "Upload", "Pricing", "About", "Contact"];
+  const navLinks = ["Explore", "Upload", "About", "Contact"];
   const legalLinks = ["Privacy Policy", "Terms of Service", "Cookie Settings"];
   const socials = [
     { label: "Twitter/X",  path: "M4 4l8 8M12 4l-8 8" },
@@ -23,9 +23,7 @@ export default function Footer() {
       }}
     >
       <div className="max-w-6xl mx-auto px-5 sm:px-8 md:px-12 lg:px-16 py-12 sm:py-16">
-        {/* Top: Brand + Nav + Socials in responsive row */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 mb-10 sm:mb-12">
-          {/* Brand */}
           <div className="flex items-center gap-3 shrink-0">
             <div
               className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
@@ -48,7 +46,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Navigation links */}
           <div className="flex flex-wrap gap-x-8 gap-y-3">
             {navLinks.map((l) => (
               <a
@@ -62,7 +59,6 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Social icons */}
           <div className="flex gap-2.5 shrink-0">
             {socials.map((s) => (
               <motion.a
@@ -85,13 +81,11 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="border-t" style={{ borderColor: "rgba(124,92,252,0.08)" }} />
 
-        {/* Bottom bar */}
         <div className="pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <p className="text-xs" style={{ color: C.muted }}>
-            © 2025 Pixel Stock, Inc. All rights reserved.
+            © 2026 Pixel Stock, Inc. All rights reserved.
           </p>
           <div className="flex flex-wrap gap-5">
             {legalLinks.map((l) => (
