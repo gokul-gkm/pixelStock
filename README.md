@@ -15,10 +15,10 @@ PixelStock is a modern, responsive image-sharing platform built with the MERN st
 
 ### Backend (Node.js + Express + TypeScript)
 - **RESTful API**: Clean and structured API architecture using Controller-Service-Repository patterns.
-- **Authentication**: JWT-based authentication with access and refresh tokens. Role-based access control (User vs. Admin).
+- **Authentication**: JWT-based authentication with access and refresh tokens.
 - **Cloud Storage**: Integrates with Cloudinary for secure and reliable image hosting and transformations.
 - **MongoDB Database**: Efficient data modeling using Mongoose for Users and Images.
-- **Email Services**: Integration with Nodemailer/SendGrid for verification emails and password reset links.
+- **Email Services**: Integration with Nodemailer for verification emails and password reset links.
 - **Security**: Password hashing (bcrypt), HTTP-only cookies, CORS configuration, and robust error handling.
 
 ## 🛠️ Tech Stack
