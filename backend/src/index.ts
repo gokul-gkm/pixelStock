@@ -5,11 +5,11 @@ import { createServer } from "http";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import morgan from 'morgan';
 
 import dbConnect from "./config/dbConfig";
-import authRoute from "./routers/auth.routers";
 import { globalErrorHandler } from "./middlewares/error.middleware";
-import morgan from 'morgan';
+import authRoute from "./routers/auth.routers";
 import userRoute from "./routers/user.routers";
 import imageRoute from "./routers/image.routers";
 
@@ -38,7 +38,6 @@ app.use('/users', userRoute);
 app.use('/images', imageRoute);
 
 app.use(globalErrorHandler);
-
 
 dbConnect()
   .then(() => {

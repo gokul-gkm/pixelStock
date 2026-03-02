@@ -24,4 +24,4 @@ RUN ln -s /app/dist /app/@
 
 EXPOSE 8080
 
-CMD ["node", "-r", "module-alias/register", "dist/app.js"]
+CMD ["node", "-r", "module-alias/register", "dist/index.js"]
